@@ -7,7 +7,7 @@
  *
  * On Windows, favorites are stored in an INI file via
  * GetPrivateProfileString. On macOS we use a JSON file in the host's
- * plugin config directory (~/.notepad++/plugins/Config/NppFavorites.json).
+ * plugin config directory (~/.nextpad++/plugins/Config/NppFavorites.json).
  *
  * Menu items:
  *   - Favorite 0..5  (showing the file name or path)
@@ -70,7 +70,7 @@ static void showAlert(NSString *title, NSString *message) {
 static std::string getConfigPath() {
     @autoreleasepool {
         // Ask the host for its plugin config directory (creates it if needed).
-        // Falls back to ~/.notepad++ if NPPM_GETPLUGINSCONFIGDIR returns empty.
+        // Falls back to ~/.nextpad++ if NPPM_GETPLUGINSCONFIGDIR returns empty.
         char buf[1024] = {};
         nppData._sendMessage(nppData._nppHandle,
                              NPPM_GETPLUGINSCONFIGDIR,
@@ -80,7 +80,7 @@ static std::string getConfigPath() {
         if (buf[0] != '\0') {
             dir = [NSString stringWithUTF8String:buf];
         } else {
-            dir = [NSHomeDirectory() stringByAppendingPathComponent:@".notepad++"];
+            dir = [NSHomeDirectory() stringByAppendingPathComponent:@".nextpad++"];
             [[NSFileManager defaultManager] createDirectoryAtPath:dir
                                       withIntermediateDirectories:YES
                                                        attributes:nil
@@ -89,9 +89,9 @@ static std::string getConfigPath() {
         NSString *newPath = [dir stringByAppendingPathComponent:@"NppFavorites.json"];
 
         // One-shot migration from the pre-fix location
-        // (~/.notepad++/NppFavorites.json → plugins/Config/NppFavorites.json).
+        // (~/.nextpad++/NppFavorites.json → plugins/Config/NppFavorites.json).
         NSString *oldPath = [NSHomeDirectory() stringByAppendingPathComponent:
-                             @".notepad++/NppFavorites.json"];
+                             @".nextpad++/NppFavorites.json"];
         NSFileManager *fm = [NSFileManager defaultManager];
         if (![newPath isEqualToString:oldPath] &&
             [fm fileExistsAtPath:oldPath] &&

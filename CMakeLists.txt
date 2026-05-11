@@ -16,6 +16,6 @@ target_include_directories(nppfavorites PRIVATE
     ${NPP_PLUGIN_INCLUDE}
     ${SCINTILLA_INCLUDE})
 target_link_libraries(nppfavorites PRIVATE "-framework Cocoa")
-set(PLUGIN_INSTALL_DIR "$ENV{HOME}/.notepad++/plugins/nppfavorites")
+set(PLUGIN_INSTALL_DIR "$ENV{HOME}/.nextpad++/plugins/nppfavorites")
 set_target_properties(nppfavorites PROPERTIES PREFIX "" SUFFIX ".dylib")
 install(TARGETS nppfavorites DESTINATION "${PLUGIN_INSTALL_DIR}")

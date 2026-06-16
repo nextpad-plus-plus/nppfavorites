@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(nppfavorites LANGUAGES CXX OBJCXX)
+project(nppfavorites VERSION 1.0.2 LANGUAGES CXX OBJCXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_OBJCXX_STANDARD 17)
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
@@ -16,6 +16,8 @@ target_include_directories(nppfavorites PRIVATE
     ${NPP_PLUGIN_INCLUDE}
     ${SCINTILLA_INCLUDE})
 target_link_libraries(nppfavorites PRIVATE "-framework Cocoa")
-set(PLUGIN_INSTALL_DIR "$ENV{HOME}/.nextpad++/plugins/nppfavorites")
+set(PLUGIN_INSTALL_DIR "$ENV{HOME}/Library/Application Support/Nextpad++/plugins/nppfavorites")
 set_target_properties(nppfavorites PROPERTIES PREFIX "" SUFFIX ".dylib")
+# Stamp version into the dylib Mach-O current_version (Plugins Admin reads it).
+target_link_options(nppfavorites PRIVATE "-Wl,-current_version,${PROJECT_VERSION}")
 install(TARGETS nppfavorites DESTINATION "${PLUGIN_INSTALL_DIR}")

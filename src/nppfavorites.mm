@@ -70,7 +70,8 @@ static void showAlert(NSString *title, NSString *message) {
 static std::string getConfigPath() {
     @autoreleasepool {
         // Ask the host for its plugin config directory (creates it if needed).
-        // Falls back to ~/.nextpad++ if NPPM_GETPLUGINSCONFIGDIR returns empty.
+        // Falls back to ~/Library/Application Support/Nextpad++/plugins/Config if
+        // NPPM_GETPLUGINSCONFIGDIR returns empty (it does not on shipped versions).
         char buf[1024] = {};
         nppData._sendMessage(nppData._nppHandle,
                              NPPM_GETPLUGINSCONFIGDIR,
@@ -80,7 +81,9 @@ static std::string getConfigPath() {
         if (buf[0] != '\0') {
             dir = [NSString stringWithUTF8String:buf];
         } else {
-            dir = [NSHomeDirectory() stringByAppendingPathComponent:@".nextpad++"];
+            dir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,
+                       NSUserDomainMask, YES).firstObject
+                       stringByAppendingPathComponent:@"Nextpad++/plugins/Config"];
             [[NSFileManager defaultManager] createDirectoryAtPath:dir
                                       withIntermediateDirectories:YES
                                                        attributes:nil
